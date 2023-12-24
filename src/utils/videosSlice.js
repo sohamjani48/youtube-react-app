@@ -4,6 +4,7 @@ const videosSlice = createSlice({
   name: "videos",
   initialState: {
     selectedCategory: "home",
+    statistics: {},
   },
   reducers: {
     addCategoryVideos: (state, action) => {
@@ -13,8 +14,13 @@ const videosSlice = createSlice({
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
     },
+    setVideoStatistics: (state, action) => {
+      const { videoId, statistics } = action.payload;
+      state.statistics[videoId] = statistics;
+    },
   },
 });
 
 export default videosSlice.reducer;
-export const { addCategoryVideos, setSelectedCategory } = videosSlice.actions;
+export const { addCategoryVideos, setSelectedCategory, setVideoStatistics } =
+  videosSlice.actions;

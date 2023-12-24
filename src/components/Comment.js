@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaThumbsUp } from "react-icons/fa";
 
 import { DOWN_CARET_IMG_LINK, UP_CARET_IMG_LINK } from "../utils/constants";
 import { getChannelThumbnailUrl, timeSince } from "../utils/helper";
@@ -48,7 +49,7 @@ const Comment = ({ commentData }) => {
         </div>
       </div>
       <div className="flex bg-gray-100 py-1 px-2 rounded-lg ml-10 items-center">
-        <img
+        {/* <img
           src={
             !commentLiked
               ? "https://png.pngitem.com/pimgs/s/129-1293150_file-like-svg-wikimedia-commons-png-youtube-blue.png"
@@ -56,8 +57,11 @@ const Comment = ({ commentData }) => {
           }
           alt="like-btn"
           className="w-5 h-5 cursor-pointer"
-          onClick={() => setCommentLiked(!commentLiked)}
-        />
+          
+        /> */}
+        <button onClick={() => setCommentLiked(!commentLiked)}>
+          <FaThumbsUp />
+        </button>
         <p className="font-semibold pl-2 text-xs">
           {commentLiked ? parseInt(likeCount) + 1 : likeCount}
         </p>

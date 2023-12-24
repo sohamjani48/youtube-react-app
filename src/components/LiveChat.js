@@ -51,7 +51,7 @@ const LiveChat = () => {
       >
         <input
           type="text"
-          className="border border-b-gray-400 border-l-0 border-r-0 border-t-0 border-b-1 flex flex-1 mr-2"
+          className="border border-b-gray-400 border-l-0 border-r-0 border-t-0 border-b-1 flex flex-1 mr-2 px-2"
           value={liveMessage}
           onChange={(e) => setLiveMessage(e.target.value)}
           placeholder="Add Live Chat Comment..."

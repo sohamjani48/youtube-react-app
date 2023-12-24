@@ -246,6 +246,19 @@ export const fetchComments = async (videoId) => {
   }
 };
 
+
+export const fetchVideoStatistics = async (videoId) => {
+  try {
+    // const apiUrl = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}&key=${GOOGLE_API_KEY}&maxResults=30`;
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${GOOGLE_API_KEY}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching comments of video:", error);
+  }
+};
+
 export const fetchCategoryVideos = async (category, liveVideos = false) => {
   try {
     // const apiUrl = liveVideos

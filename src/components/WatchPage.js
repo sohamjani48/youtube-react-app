@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 import { closeMenu } from "../utils/appSlice";
+import { clearMessages } from "../utils/chatSlice";
 import { addComments } from "../utils/commentsSlice";
 import {
   fetchComments,
+  fetchVideoStatistics,
   getChannelThumbnailUrl,
   timeSince,
   trimText,
 } from "../utils/helper";
+import { setVideoStatistics } from "../utils/videosSlice";
 import CommentsContainer from "./CommentContainer";
 import LiveChat from "./LiveChat";
 
@@ -28,6 +32,9 @@ const WatchPage = () => {
     (store) => store.search.isSearchInitialized
   );
   const searchedVideos = useSelector((store) => store.search.searchedVideos);
+  const savedStatistics = useSelector(
+    (store) => store.videos.statistics[videoId]
+  );
 
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const [showMore, setShowMore] = useState(false);
@@ -35,6 +42,7 @@ const WatchPage = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState(videoComments || null);
+  const [statistics, setStatistics] = useState(savedStatistics || {});
 
   let videoDetails = {};
 
@@ -46,12 +54,11 @@ const WatchPage = () => {
     videoDetails = categoryVideos.find((video) => video.id === videoId);
   }
 
-  let statistics = {};
   const { snippet } = videoDetails;
 
-  if (!isSearchInitialized) {
-    statistics = videoDetails?.statistics;
-  }
+  // if (!isSearchInitialized) {
+  //   videoDetails?.statistics && setStatistics(videoDetails.statistics);
+  // }
 
   const { channelTitle, title, description } = snippet;
 
@@ -86,9 +93,17 @@ const WatchPage = () => {
     setComments(commentsObject);
   };
 
+  const getVideoStatistics = async (videoId) => {
+    const statisticsData = await fetchVideoStatistics(videoId);
+    dispatch(setVideoStatistics({ videoId, statistics: statisticsData }));
+    setStatistics(statisticsData?.items[0]?.statistics);
+  };
+
   useEffect(() => {
     dispatch(closeMenu());
+    dispatch(clearMessages());
 
+    getVideoStatistics(videoId);
     if (!videoComments && !isLive) {
       getVideoComments(videoId);
     }
@@ -121,27 +136,38 @@ const WatchPage = () => {
         </div>
 
         <div className="flex">
-          <div className="flex bg-gray-100 py-2 px-4 rounded-lg ml-20">
-            <img
+          <div className="flex bg-gray-100 py-2 px-4 rounded-lg ml-20 items-center">
+            {/* <img
               src={
-                liked
+                !liked
                   ? "https://png.pngitem.com/pimgs/s/129-1293150_file-like-svg-wikimedia-commons-png-youtube-blue.png"
                   : "https://png.pngitem.com/pimgs/s/165-1658491_youtube-like-button-like-button-youtube-png-transparent.png"
               }
               alt="like-btn"
               className="w-6 h-6 cursor-pointer"
-              onClick={() => setLiked(!liked)}
-            />
-            <p className="font-semibold pl-2">
-              {liked ? likeCount : parseInt(likeCount) + 1}
+              onClick={() => {
+                setLiked(!liked);
+              }}
+            /> */}
+            <button
+              onClick={() => {
+                setLiked(!liked);
+              }}
+            >
+              <FaThumbsUp />
+            </button>
+
+            <p className="font-semibold px-2">
+              {!liked ? likeCount : parseInt(likeCount) + 1}
             </p>
-            <img
-              src="            https://cdn4.iconfinder.com/data/icons/music-ui-solid-24px/24/thumbs_up_dislike-2-512.png              "
-              alt="like-btn"
-              className="w-6 h-6 cursor-pointer ml-2"
-            />
+            <button>
+              <FaThumbsDown />
+            </button>
           </div>
-          <button className="ml-1  px-4 bg-gray-100 rounded-lg font-semibold py-2">
+
+          <button
+            className={`ml-1  px-4 bg-gray-100 rounded-lg font-semibold py-2`}
+          >
             Share
           </button>
           <button className="ml-1  px-4 bg-gray-100 rounded-lg font-semibold py-2">
@@ -152,7 +178,6 @@ const WatchPage = () => {
     </div>
   );
 
-  console.log("logxx isLive value is", isLive, !isLive);
   return (
     <div className="flex flex-col w-full py-4">
       <div className="flex px-4 py-2">

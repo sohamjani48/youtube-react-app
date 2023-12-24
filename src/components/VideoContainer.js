@@ -41,12 +41,14 @@ const VideoContainer = () => {
   }, []);
 
   useEffect(() => {
-    setVideos([]);
     if (isSearchInitialized) {
+      setVideos([]);
       getSearchVideos(searchString);
     } else {
       if (!categoryVideos) {
         getCategoryVideos(selectedCategory);
+      } else {
+        setVideos(categoryVideos);
       }
     }
   }, [selectedCategory, searchString]);

@@ -44,10 +44,10 @@ const VideoCard = ({ data }) => {
         </div>
         <div className="flex flex-col w-10/12">
           <ul>
-            <li className="font-semibold py-1">{trimText(title, 60)}</li>
+            <li className="font-bold py-1">{trimText(title, 60)}</li>
             <li>{channelTitle}</li>
             <li>
-              {!liveBroadcastContent ? (
+              {liveBroadcastContent !== "live" ? (
                 <span className="flex flex-row">
                   <p className="pr-1">
                     {statistics.viewCount > 1000000

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { RiSearchLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 
-import { toggleMenu } from "../utils/appSlice";
+import { openMenu, toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
 import {
   cacheResults,
@@ -60,7 +61,7 @@ const Head = () => {
       </div>
 
       <div className=" ml-[25%]">
-        <div>
+        <div className="flex items-center">
           <input
             type="text"
             className="w-[420px] border border-gray-400 rounded-l-full py-1 px-3"
@@ -69,8 +70,8 @@ const Head = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
           />
-          <button className="border border-gray-500 py-1 px-4 rounded-r-full bg-slate-300">
-            🔍
+          <button className="border border-gray-500 py-2 px-4 rounded-r-full bg-slate-300">
+            <RiSearchLine />
           </button>
         </div>
         {showSuggestions && suggestions.length ? (
@@ -80,14 +81,18 @@ const Head = () => {
                 <li
                   className="py-1 px-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => {
-                    console.log("logxx setting search preferences");
+                    if (window.location.pathname !== "/") window.history.back();
                     setSearchQuery(suggestion);
                     dispatch(setSearchInitialized(true));
                     dispatch(setSearchString(suggestion));
+                    dispatch(openMenu());
                     setShowSuggestions(false);
                   }}
                 >
-                  {`🔍 ${suggestion}`}
+                  <span className="flex gap-2 items-center">
+                    <RiSearchLine />
+                    <p>{suggestion}</p>
+                  </span>
                 </li>
               ))}
             </ul>
