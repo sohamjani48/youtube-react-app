@@ -125,7 +125,7 @@ const WatchPage = () => {
             className="px-4 py-2 font-semibold border border-gray-200 rounded-xl ml-4"
             onClick={() => setJoined(!joined)}
           >
-            {joined ? "Join" : "Joined"}
+            {joined ? "Joined" : "Join"}
           </button>
           <button
             className="px-4 py-2 font-semibold bg-black text-white rounded-xl ml-2"

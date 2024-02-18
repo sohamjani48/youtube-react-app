@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import { getChannelThumbnailUrl, timeSince, trimText } from "../utils/helper";
 
@@ -12,6 +13,8 @@ const VideoCard = ({ data }) => {
   } = snippet;
 
   const [thumb, setThumb] = useState(null);
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
+
   const getThumbnail = async (channelId) => {
     const channelThumbnailUrl = await getChannelThumbnailUrl(channelId);
     setThumb(channelThumbnailUrl);
@@ -23,7 +26,11 @@ const VideoCard = ({ data }) => {
   });
 
   return (
-    <div className="p-2 m-2 w-[350px] rounded-md">
+    <div
+      className={`p-2 m-2 ${
+        isMenuOpen ? "w-[350px]" : "w-[400px]"
+      }  rounded-md`}
+    >
       {liveBroadcastContent === "live" ? (
         <p className="px-2 py-1 bg-red-700 absolute font-bold text-white border border-black rounded-lg">
           Live
@@ -50,11 +57,11 @@ const VideoCard = ({ data }) => {
               {liveBroadcastContent !== "live" ? (
                 <span className="flex flex-row">
                   <p className="pr-1">
-                    {statistics.viewCount > 1000000
+                    {statistics?.viewCount > 1000000
                       ? `${Math.floor(statistics.viewCount / 1000000)}M `
-                      : statistics.viewCount > 1000
+                      : statistics?.viewCount > 1000
                       ? `${Math.floor(statistics.viewCount / 1000)}K `
-                      : statistics.viewCount}{" "}
+                      : statistics?.viewCount}
                     views
                   </p>
                   <p className="font-bold pr-1">·</p>

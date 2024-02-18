@@ -27,11 +27,12 @@ const VideoContainer = () => {
   }, []);
 
   const getCategoryVideos = useCallback(async (selectedCategory) => {
+    setVideos([]);
     const videos = await fetchCategoryVideos(
       selectedCategory,
       selectedCategory === "live"
     );
-    setVideos(videos.items);
+    setVideos([...videos.items]);
     dispatch(
       addCategoryVideos({
         category: selectedCategory,
@@ -41,17 +42,17 @@ const VideoContainer = () => {
   }, []);
 
   useEffect(() => {
+    setVideos([]);
     if (isSearchInitialized) {
-      setVideos([]);
       getSearchVideos(searchString);
     } else {
       if (!categoryVideos) {
         getCategoryVideos(selectedCategory);
       } else {
-        setVideos(categoryVideos);
+        setVideos([...categoryVideos]);
       }
     }
-  }, [selectedCategory, searchString]);
+  }, [selectedCategory, searchString, categoryVideos]);
 
   if (!videos?.length) return;
 
