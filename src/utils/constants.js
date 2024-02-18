@@ -1,5 +1,4 @@
-// export const GOOGLE_API_KEY = "AIzaSyBszGiL62JJ6IITWGgdDLzRkzn1KQK2Qh0";
-export const GOOGLE_API_KEY = "AIzaSyCcL9ofajHQz6wri7KY2VfA3wFuEe3zYD0";
+export const GOOGLE_API_KEY = "INSERT_YOUR_GOOGLE_API_KEY";
 
 export const LIVE_CHAT_OFFSET = 50;
 
